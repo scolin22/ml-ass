@@ -11,6 +11,18 @@ model.predict = @predict;
 end
 
 function [yhat] = predict(model,Xtest)
+X = model.X;
+[N,D] = size(X);
 [T,D] = size(Xtest);
-yhat = ones(T,1);
+yhat = zeros(T,1);
+
+% create dist from model.X and Xtest
+ED = X.^2*ones(D,T) + ones(N,D)*(Xtest').^2 - 2*X*(Xtest');
+
+% iterate over columns in dist
+for n = 1:T
+    % get the model.K-least elements in dist and take the class label mode and insert in yhat
+    [kMinElems kMinIdx] = getNElements(ED(:,n), model.K);
+    yhat(n) = mode(model.y(kMinIdx));
+end
 end

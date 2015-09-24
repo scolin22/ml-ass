@@ -4,7 +4,7 @@ load binary.mat
 [N,D] = size(X);
 
 % Fit decision tree
-model = decisionTree_InfoGain(X,y,1);
+model = knn(X,y,10);
 
 % Compute training error
 yhat = model.predict(model,X);
