@@ -18,7 +18,15 @@ p_y = counts/N; % This is the probability of each class, p(y(i) = c)
 % We will store:
 %   p(x(i,j) = 1 | y(i) = c) as p_xy(j,1,c)
 %   p(x(i,j) = 0 | y(i) = c) as p_xy(j,2,c)
-p_xy = (1/2)*ones(D,2,C); 
+p_xy = zeros(D,2,C);
+
+for c = 1:C
+    % Count of each feature with label c
+    countDCTrue = sum(X(y==c,:)==1);
+    countDCFalse = sum(X(y==c,:)==0);
+    p_xy(:,1,c) = countDCTrue/counts(c);
+    p_xy(:,2,c) = countDCFalse/counts(c);
+end
 
 model.C = C;
 model.p_y = p_y;
