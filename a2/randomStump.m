@@ -27,20 +27,20 @@ splitThreshold = [];
 splitLabel0 = maxLabel;
 splitLabel1 = [];
 
-% Loop over features looking for the best split
+% Choose a random feature to split
 if any(y ~= y(1))
-    for d = 1:D
+    d = randsample(D,1);
         thresholds = sort(unique(X(:,d)));
-        
+
         for t = thresholds'
-            
+
             % Count number of class labels where the feature is greater than threshold
             count1 = zeros(C,1);
             for n = find(X(:,d) > t)'
                 count1(y(n)) = count1(y(n)) + 1;
             end
             count0 = count-count1;
-                        
+
             % Compute infogain
             p1 = count1/sum(count1);
             p0 = count0/sum(count0);
@@ -49,7 +49,7 @@ if any(y ~= y(1))
             prob1 = sum(X(:,d) > t)/N;
             prob0 = 1-prob1;
             infoGain = entropyTotal - prob1*H1 - prob0*H0;
-            
+
             % Compare to minimum error so far
             if infoGain > maxGain
                 % This is the lowest error, store this value
@@ -61,7 +61,6 @@ if any(y ~= y(1))
                 [maxCount,splitLabel0] = max(count0);
             end
         end
-    end
 end
 model.splitVariable = splitVariable;
 model.splitThreshold = splitThreshold;
