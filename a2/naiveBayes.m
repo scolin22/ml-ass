@@ -1,6 +1,4 @@
 function [model] = naiveBayes(X,y)
-
-load wordlist.mat
 % [model] = naiveBayes(X,y,k)
 %
 % Implementation of navie Bayes classifier for binary features
@@ -29,11 +27,6 @@ for c = 1:C
     p_xy(:,1,c) = countDCTrue/counts(c);
     p_xy(:,2,c) = countDCFalse/counts(c);
 end
-
-[ASorted AIdx] = sort(p_xy(:,1,:), 'descend');
-largestNElements = ASorted(1:3,:,:);
-largestNIdx = AIdx(1:3,:,:);
-popwords = wordlist(largestNIdx);
 
 model.C = C;
 model.p_y = p_y;
