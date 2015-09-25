@@ -6,7 +6,7 @@ function [model] = randomForest(X,y,depth,nBootstraps)
 [N,D] = size(X);
 
 for k = 1:nBootstraps
-    sample = 1:N;
+    sample = randsample(N,N,true);
     model.subModel{k} = randomTree(X(sample,:),y(sample),depth);
 end
 
