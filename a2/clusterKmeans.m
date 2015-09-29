@@ -5,28 +5,21 @@ function [model] = clusterKmeans(X,K)
 
 [N,D] = size(X);
 
-% Choose random points to initialize means
-% means = zeros(K,D);
-% for k = 1:K
-%     i = ceil(rand*N);
-%     means(k,:) = X(i,:);
-% end
+means       = zeros(K, D);
+minEucDisSQ = ones(N, 1);
 
-% Instead of k random points
-% start with 1 random point, C, from X
-% Compute EuclDist from all points to C
-% chose another point based on the EuclDist^2 distribution, chose the furthest disance
-% EuclDist^2 determined by the closest mean
-
-means = zeros(K,D);
-ED = 1/N*ones(N,1);
 for k = 1:K
-    OldED = ED;
-    means(k,:) = X(sampleDiscrete(OldED),:);
+    % Create sampling distribution for N,1
+    P = bsxfun(@rdivide, minEucDisSQ, sum(minEucDisSQ));
 
-    ED = sqrt(X.^2*ones(D,K) + ones(N,D)*(means').^2 - 2*X*means');
-    minED = min(ED,[],2);
-    totalED = sum(minED(:,1:k),1);
+    % Choose a new mean candidate from P for K,D
+    means(k,:) = X(sampleDiscrete(P), :);
+
+    % Compute ED for N,K
+    EucDis = sqrt(X.^2*ones(D,K) + ones(N,D)*(means').^2 - 2*X*means');
+
+    % Select Min ED^2 for N,1
+    minEucDisSQ = bsxfun(@power, min(EucDis(:,1:k), [], 2), 2*ones(N, 1));
 end
 
 X2 = X.^2*ones(D,K);
