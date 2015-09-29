@@ -22,6 +22,7 @@ for k = 1:K
     minEucDisSQ = bsxfun(@power, min(EucDis(:,1:k), [], 2), 2*ones(N, 1));
 end
 
+% Rest of the K-means logic is untouched
 X2 = X.^2*ones(D,K);
 while 1
     means_old = means;
