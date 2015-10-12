@@ -1,7 +1,13 @@
 load newsgroups.mat
 
 [N,D] = size(X);
-K = 4;
+K = 5;
 
 model = recommender(X, K);
-rec = model.predict(model, 1);
+
+for n = 1:5
+    wordNumbers = model.predict(model, n);
+    fprintf('%s: ',wordlist{n});
+    fprintf('%s ',wordlist{wordNumbers});
+    fprintf('\n');
+end
