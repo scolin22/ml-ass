@@ -27,14 +27,14 @@ end
 pairProb = pairProb * 1/nModels;
 
 % Cluster based on probabilities of pairs appearing in the same cluster > 0.5
-clusters = clusterProbBasedcluster(X, 0.5, 1, pairProb);
+clusters = clusterProbBasedcluster(X, 0.5, pairProb);
 % End New Code
 
 model.clusters = clusters;
 end
 
 %% Probablistic Based Clustering
-function [cluster] = clusterProbBasedcluster(X,eps,minPts,D)
+function [cluster] = clusterProbBasedcluster(X,eps,D)
 [N,~] = size(X);
 
 % This will be the cluster of each object.
@@ -51,16 +51,16 @@ for i = 1:N
         visited(i) = 1;
         % Take likelihoods > eps
         neighbors = find(D(:,i) > eps);
-        if length(neighbors) >= minPts
+        if length(neighbors) > 0
             % We found a new cluster
             K = K + 1;
-            [visited,cluster] = expand(X,i,neighbors,K,eps,minPts,D,visited,cluster);
+            [visited,cluster] = expand(X,i,neighbors,K,eps,D,visited,cluster);
         end
     end
 end
 end
 
-function [visited,cluster] = expand(X,i,neighbors,K,eps,minPts,D,visited,cluster)
+function [visited,cluster] = expand(X,i,neighbors,K,eps,D,visited,cluster)
 cluster(i) = K;
 ind = 0;
 while 1
@@ -75,9 +75,7 @@ while 1
         visited(n) = 1;
         % Take likelihoods > eps
         neighbors2 = find(D(:,n) > eps);
-        if length(neighbors2) >= minPts
-            neighbors = [neighbors;setdiff(neighbors2,neighbors)];
-        end
+        neighbors = [neighbors;setdiff(neighbors2,neighbors)];
     end
 end
 end
