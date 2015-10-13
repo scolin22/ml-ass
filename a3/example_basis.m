@@ -2,16 +2,21 @@
 % Load data
 load basisData.mat
 
-% Plot data
+degree = 8;
 figure(1);
-plot(X,y,'b.')
-title('Training Data');
-hold on
 
-% Fit least-squares estimator
-model = simpleLeastSquares(X,y);
+for d = 0:degree
+    % Plot data
+    subplot(3,3,d+1)
+    plot(X,y,'b.')
+    title(['degree = ', num2str(d)]);
+    hold on
 
-% Draw model prediction
-Xsample = [min(X):.1:max(X)]';
-yHat = model.predict(model,Xsample);
-plot(Xsample,yHat,'g-');
+    % Fit least-squares estimator
+    model = leastSquaresBasis(X,y,d);
+
+    % Draw model prediction
+    Xsample = [min(X):.1:max(X)]';
+    yHat = model.predict(model,Xsample);
+    plot(Xsample,yHat,'g-');
+end
