@@ -1,6 +1,7 @@
 function [model] = leastSquares(X,y)
 
 % Solve least squares problem
+% \ solves Ax = B for x
 w = (X'*X)\X'*y;
 
 model.w = w;

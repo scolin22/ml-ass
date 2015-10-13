@@ -9,7 +9,7 @@ title('Training Data');
 hold on
 
 % Fit least-squares estimator
-model = leastSquares(X,y);
+model = simpleLeastSquares(X,y);
 
 % Draw model prediction
 Xsample = [min(X):.1:max(X)]';
