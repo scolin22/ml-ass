@@ -13,8 +13,8 @@ yvalidation = y(Ntrain+1:end,:);
 
 degree = 20;
 
-trainMSE = zeros(degree,1);
-validationMSE = zeros(degree,1);
+trainMSE = zeros(degree+1,1);
+validationMSE = zeros(degree+1,1);
 
 for d = 0:degree
     % Fit least-squares estimator
@@ -28,7 +28,7 @@ for d = 0:degree
     yhat = model.predict(model,Xvalidation);
     validationMSE(d+1) = sum((yhat - yvalidation).^2)/Ntrain;
 
-    fprintf('degree %02d: test error: %f, validation error: %f\n',d,trainMSE(d+1),validationMSE(d+1));
+    fprintf('degree %02d: training error: %f, validation error: %f\n',d,trainMSE(d+1),validationMSE(d+1));
 end
 
 % subplot(2,1,1);
