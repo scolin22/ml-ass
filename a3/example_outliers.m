@@ -9,7 +9,8 @@ title('Training Data');
 hold on
 
 % Fit least-squares estimator
-model = leastSquares(X,y);
+z = [ones(1,400) 0.1*ones(1,100)];
+model = weightedLeastSquares(X,y,z);
 
 % Draw model prediction
 Xsample = [min(X):.01:max(X)]';
