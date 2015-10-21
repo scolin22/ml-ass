@@ -1,12 +1,10 @@
 function [model] = leastSquaresRBF(X,y,sigma,lambda)
-
-[N,D] = size(X);
-
 Xrbf = rbfBasis(X,X,sigma);
 
 % Solve least squares problem
 % Add L-2 Regularization
-w = (Xrbf'*Xrbf + lambda*eye(N,N))\Xrbf'*y;
+[~,D] = size(Xrbf);
+w = (Xrbf'*Xrbf + lambda*eye(D,D))\Xrbf'*y;
 
 model.X = X;
 model.w = w;
