@@ -9,7 +9,8 @@ title('Training Data');
 hold on
 
 % Fit least-squares estimator
-model = leastSquaresGradient(X,y);
+epsilon = 0.1;
+model = robustRegressionGradient(X,y,epsilon);
 
 % Draw model prediction
 Xsample = [min(X):.01:max(X)]';

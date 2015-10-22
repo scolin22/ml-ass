@@ -14,8 +14,10 @@ while 1
 	w_new = w - alpha*g;
 	[f_new,g_new] = funObj(w_new,varargin{:});
 	funEvals = funEvals+1;
-    
+
     gg = g'*g;
+    % If we overshoot by a lot, then decrease alpha by a lot.
+    % If we barely overshoot, alpha = alpha/2.
     while f_new > f - gamma*alpha*gg
         fprintf('Backtracking...\n');
         alpha = alpha^2*gg/(2*(f_new - f + alpha*gg));
@@ -27,21 +29,21 @@ while 1
     %% Update step-size for next iteration
     y = g_new - g;
     alpha = -alpha*(y'*g)/(y'*y);
-    
+
     %% Update parameters/function/gradient
     w = w_new;
     f = f_new;
     g = g_new;
-	
+
     %% Test termination conditions
 	optCond = norm(g,'inf');
 	fprintf('%6d %15.5e %15.5e %15.5e\n',funEvals,alpha,f,optCond);
-	
+
 	if optCond < optTol
         fprintf('Problem solved up to optimality tolerance\n');
 		break;
 	end
-	
+
 	if funEvals >= maxEvals
         fprintf('At maximum number of function evaluations\n');
 		break;

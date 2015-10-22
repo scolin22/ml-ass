@@ -12,7 +12,7 @@ w0 = zeros(d,1);
 [f2,g2] = autoGrad(w0,@funObj,X,y,epsilon);
 
 if max(abs(g-g2) > 1e-4)
-    fprintf('User and numerical derivatives differ:\n');
+    fprintf('User and numerical derivatives differ (2nd is auto):\n');
     [g g2]
 else
     fprintf('User and numerical derivatives agree.\n');
@@ -32,5 +32,9 @@ yhat = Xtest*w;
 end
 
 function [f,g] = funObj(w,X,y,epsilon)
+    u = (X*w-y).^2 + epsilon;
+    f = sum(sqrt(u));
 
+    v = 2*(X*w-y);
+    g = sum(0.5*u.^-0.5.*v.*X);
 end
