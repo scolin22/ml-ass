@@ -15,7 +15,7 @@ while 1
 	w_new = w - alpha*g;
 	[f_new,g_new] = funObj(w_new,varargin{:});
 	funEvals = funEvals+1;
-    
+
     gg = g'*g;
     while f_new > f - gamma*alpha*gg
         if verbose
@@ -30,30 +30,30 @@ while 1
     %% Update step-size for next iteration
     y = g_new - g;
     alpha = -alpha*(y'*g)/(y'*y);
-    
+
     %% Sanity check on step-size
     if ~isLegal(alpha) || alpha < 1e-10 || alpha > 1e10
-       alpha = 1; 
+       alpha = 1;
     end
-    
+
     %% Update parameters/function/gradient
     w = w_new;
     f = f_new;
     g = g_new;
-	
+
     %% Test termination conditions
 	optCond = norm(g,'inf');
     if verbose
         fprintf('%6d %15.5e %15.5e %15.5e\n',funEvals,alpha,f,optCond);
     end
-	
+
 	if optCond < optTol
         if verbose
             fprintf('Problem solved up to optimality tolerance\n');
         end
 		break;
 	end
-	
+
 	if funEvals >= maxEvals
         if verbose
             fprintf('At maximum number of function evaluations\n');
