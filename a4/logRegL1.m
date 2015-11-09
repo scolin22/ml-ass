@@ -1,4 +1,4 @@
-function [model] = logRegL2(X,y,lambda)
+function [model] = logRegL1(X,y,lambda)
 
 [n,d] = size(X);
 
@@ -7,9 +7,9 @@ verbose = 1; % Whether or not to display progress of algorithm
 w0 = rand(d,1);
 
 % This is how you compute the function and gradient:
-[f,g] = logisticLossL2(w0,X,y,lambda);
+[f,g] = logisticLossL1(w0,X,y);
 % Derivative check that the gradient code is correct:
-[f2,g2] = autoGrad(w0,@logisticLossL2,X,y,lambda);
+[f2,g2] = autoGrad(w0,@logisticLossL1,X,y);
 if max(abs(g-g2) > 1e-4)
     fprintf('User and numerical derivatives differ:\n');
     [g g2]
@@ -17,12 +17,12 @@ else
     fprintf('User and numerical derivatives agree.\n');
 end
 
-model.w = findMin(@logisticLossL2,w0,maxFunEvals,verbose,X,y,lambda);
+model.w = findMinL1(@logisticLossL1,w0,lambda,maxFunEvals,verbose,X,y);
 model.predict = @(model,X)sign(X*model.w); % Predictions by taking sign
 end
 
-function [f,g] = logisticLossL2(w,X,y,lambda)
+function [f,g] = logisticLossL1(w,X,y)
 yXw = y.*(X*w);
-f = sum(log(1+exp(-yXw))) + lambda/2*norm(w)^2; % Function value with L2 regularization
-g = -X'*(y./(1+exp(yXw))) + lambda*w; % Gradient with L2 regularization
+f = sum(log(1+exp(-yXw))); % Function value
+g = -X'*(y./(1+exp(yXw))); % Gradient
 end
