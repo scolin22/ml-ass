@@ -17,7 +17,7 @@ Xvalidate = [ones(t,1) Xvalidate];
 %% Fit logistic regression model,
 % then report number of non-zeroes and validation error
 
-model = logRegL1(X,y,1);
+model = logRegL0(X,y,1);
 
 numberOfNonZero = nnz(model.w);
 
@@ -27,4 +27,4 @@ trainingError = sum(yhat ~= y)/t;
 yhat = model.predict(model,Xvalidate);
 validationError = sum(yhat ~= yvalidate)/t;
 
-fprintf('Number of non-zero: %d\nTraining error: %d\nValidation error: %d\n', numberOfNonZero, trainingError, validationError);
+fprintf('Number of non-zero: %d\nTraining error: %f\nValidation error: %f\n', numberOfNonZero, trainingError, validationError);

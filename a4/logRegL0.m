@@ -6,7 +6,7 @@ verbose = 0; % Whether or not to display progress of algorithm
 w0 = zeros(d,1);
 oldScore = inf;
 
-% Fit model with only 1 variable, 
+% Fit model with only 1 variable,
 % and record 'score' which is the loss plus the regularizer
 ind = 1;
 w = findMin(@logisticLoss,w0(ind),maxFunEvals,verbose,X(:,ind),y);
@@ -16,18 +16,25 @@ minInd = ind;
 
 while minScore ~= oldScore
     oldScore = minScore;
-    fprintf('\nCurrent set of selected variables (score = %f):',minScore);
+    fprintf('Current set of selected variables (score = %f):',minScore);
     fprintf(' %d',ind);
-    
+    fprintf('\n');
+
     for i = 1:d
         if any(ind == i)
             % This variable has already been added
             continue;
         end
-        
+
         % Fit the model with 'i' added to the features,
         % then compute the score and update the minScore/minInd
         ind_new = union(ind,i);
+        w = findMin(@logisticLoss,w0(ind_new),maxFunEvals,verbose,X(:,ind_new),y);
+        score = logisticLoss(w,X(:,ind_new),y) + lambda*length(w);
+        if score < minScore && score < oldScore
+            minScore = score;
+            minInd = ind_new;
+        end
     end
     ind = minInd;
 end
