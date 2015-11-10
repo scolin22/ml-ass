@@ -5,9 +5,9 @@ X = standardizeCols(X);
 
 [U,S,V] = svd(X);
 
-S2 = S(1:n,1:n).^2;
-S2_sum = trace(S2);
-S2_div = S2./S2_sum;
+Var = S(1:n,1:n).^2;
+Var_sum = trace(Var);
+Var_norm = S2./Var_sum;
 
 X_fro = norm(X,'fro')^2;
 for k = 1:d
@@ -25,7 +25,8 @@ for k = 1:d
     Z = X*W';
     numer_fro = norm(X-Z*W,'fro')^2;
     if k < n
-        S2_csum = abs(1 - trace(S2_div(1:k,1:k)));
+        % Normalized cumulative sum of the variance along the diagonal
+        Var_ncsum = abs(1 - trace(Var_norm(1:k,1:k)));
     end
-    fprintf('Compression Ratio: %f, 1-SigmanCSum: %f\n', numer_fro/X_fro, S2_csum);
+    fprintf('k: %d, Compression Ratio: %f, 1-VarNCSum: %f\n', k, numer_fro/X_fro, Var_ncsum);
 end
