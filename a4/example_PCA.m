@@ -5,7 +5,7 @@ k = 3;
 X = standardizeCols(X);
 
 [U,S,V] = svd(X);
-W = V(1:k,:);
+W = V(:,1:k)';
 % Check L2 norm of each row is 1
 % and Inner Product between first and all other rows is 0
 for row = 1:k
