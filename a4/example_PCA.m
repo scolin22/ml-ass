@@ -1,7 +1,7 @@
 load animals.mat
 
 [n,d] = size(X);
-k = 2;
+k = 3;
 X = standardizeCols(X);
 
 [U,S,V] = svd(X);
@@ -21,11 +21,10 @@ Z = X*W';
 
 % figure(1);
 % imagesc(Z);
-hFig = figure(2);
-set(hFig, 'Position', [0 0 800 1024])
-plot(Z(:,1),Z(:,2),'.');
+figure(2);
+scatter3(Z(:,1),Z(:,2),Z(:,3),'.');
 % gname(animals);
 hold on;
 for i = 1:n
-    text(Z(i,1),Z(i,2),animals(i,:));
+    text(Z(i,1),Z(i,2),Z(i,3),animals(i,:));
 end
