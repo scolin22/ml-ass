@@ -3,6 +3,7 @@ load cities.mat
 X = ratings;
 [n,d] = size(X);
 k = 3;
+X = standardizeCols(X);
 
 ED = X.^2*ones(d,n) + ones(n,d)*(X').^2 - 2*X*(X');
 
