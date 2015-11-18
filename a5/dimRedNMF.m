@@ -10,18 +10,22 @@ X = X - repmat(mu,[n 1]);
 W = randn(k,d);
 Z = randn(n,k);
 
+% Set negative elements to zero
+W(W < 0) = 0;
+Z(Z < 0) = 0;
+
 f = (1/2)*sum(sum((X-Z*W).^2));
 for iter = 1:50
     fOld = f;
 
     % Update Z
-    Z(:) = findMin(@funObjZ,Z(:),10,0,X,W);
+    Z(:) = findMinNN(@funObjZ,Z(:),10,0,X,W);
 
     % Update W
-    W(:) = findMin(@funObjW,W(:),10,0,X,Z);
+    W(:) = findMinNN(@funObjW,W(:),10,0,X,Z);
 
     f = (1/2)*sum(sum((X-Z*W).^2));
-    fprintf('Iteration %d, loss = %.5e\n',iter,f);
+    % fprintf('Iteration %d, loss = %.5e\n',iter,f);
 
     if fOld - f < 1
         break;
@@ -38,10 +42,26 @@ function [Z] = compress(model,X)
 [t,d] = size(X);
 mu = model.mu;
 W = model.W;
+[k,~] = size(W);
 
 X = X - repmat(mu,[t 1]);
-% We didn't enforce that W was orthogonal so we need to solve least squares
-Z = X*W'*inv(W*W');
+% Find a non-negative Z that minimizes the objective function with W fixed.
+Z = randn(t,k);
+Z(Z < 0) = 0;
+f = (1/2)*sum(sum((X-Z*W).^2));
+for iter = 1:50
+    fOld = f;
+
+    % Update Z
+    Z(:) = findMinNN(@funObjZ,Z(:),10,0,X,W);
+
+    f = (1/2)*sum(sum((X-Z*W).^2));
+    fprintf('Iteration %d, loss = %.5e\n',iter,f);
+
+    if fOld - f < 1
+        break;
+    end
+end
 end
 
 function [X] = expand(model,Z)

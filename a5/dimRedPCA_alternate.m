@@ -13,16 +13,16 @@ Z = randn(n,k);
 f = (1/2)*sum(sum((X-Z*W).^2));
 for iter = 1:50
     fOld = f;
-    
+
     % Update Z
-    Z(:) = findMin(@funObjZ,Z(:),10,0,X,W);
-    
+    Z(:) = findMinNN(@funObjZ,Z(:),10,0,X,W);
+
     % Update W
-    W(:) = findMin(@funObjW,W(:),10,0,X,Z);
-    
+    W(:) = findMinNN(@funObjW,W(:),10,0,X,Z);
+
     f = (1/2)*sum(sum((X-Z*W).^2));
     fprintf('Iteration %d, loss = %.5e\n',iter,f);
-    
+
     if fOld - f < 1
         break;
     end
