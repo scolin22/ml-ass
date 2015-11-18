@@ -15,10 +15,10 @@ for iter = 1:50
     fOld = f;
 
     % Update Z
-    Z(:) = findMinNN(@funObjZ,Z(:),10,0,X,W);
+    Z(:) = findMin(@funObjZ,Z(:),10,0,X,W);
 
     % Update W
-    W(:) = findMinNN(@funObjW,W(:),10,0,X,Z);
+    W(:) = findMin(@funObjW,W(:),10,0,X,Z);
 
     f = (1/2)*sum(sum((X-Z*W).^2));
     fprintf('Iteration %d, loss = %.5e\n',iter,f);
