@@ -32,3 +32,12 @@ yhat = model.predict(model,Xvalidate);
 err = mean(abs(yhat - yvalidate));
 
 fprintf('Average absolute error by using user+movie average rating: %f\n',err);
+
+%% Stochastic Gradient baseline
+
+k = 10;
+model = recommendSVD(X,y,k);
+yhat = model.predict(model,Xvalidate);
+err = mean(abs(yhat - yvalidate));
+
+fprintf('Average absolute error by using stochastic gradient with user+movie average rating bias: %f\n',err);
