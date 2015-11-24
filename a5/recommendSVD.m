@@ -16,7 +16,7 @@ Z = .00001*randn(n,k);
 % Optimization
 maxIter = 10;
 alpha = 1e-2;
-for iter = 1:maxIter
+for iter = 1:maxIter*nRatings
 
     % Compute gradient
     gu = zeros(n,1);
@@ -46,13 +46,11 @@ for iter = 1:maxIter
 
     % Compute and output function value
     f = 0;
-    for i = 1:nRatings
-        u = X(i,1);
-        m = X(i,2);
-        yhat = bu(u) + bm(m) + W(:,m)'*Z(u,:)';
-        f = f + (1/2)*(y(i) - yhat)^2;
-    end
-    fprintf('Iter = %d, f = %e\n',iter,f);
+    u = X(i,1);
+    m = X(i,2);
+    yhat = bu(u) + bm(m) + W(:,m)'*Z(u,:)';
+    f = f + (1/2)*(y(i) - yhat)^2;
+    % fprintf('Iter = %d, f = %e\n',iter,f);
 end
 
 model.bu = bu;
