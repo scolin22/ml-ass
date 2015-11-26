@@ -19,4 +19,4 @@ for i = 1:n
 end
 
 % Figure 3 shows MDS visualization
-z = visualizeISOMAP(X,2,3,animals);
+z = visualizeISOMAP(X,2,2,animals);

@@ -36,6 +36,8 @@ for i = 1:n
     end
 end
 
+D(isinf(D)) =  max(D(isfinite(D)));
+
 % Initialize low-dimensional representation with PCA
 [U,S,V] = svd(X);
 W = V(:,1:k)';
