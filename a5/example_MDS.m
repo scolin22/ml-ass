@@ -19,4 +19,4 @@ for i = 1:n
 end
 
 % Figure 3 shows MDS visualization
-z = visualizeMDS(X,2,animals);
+z = visualizeSamman(X,2,animals);
