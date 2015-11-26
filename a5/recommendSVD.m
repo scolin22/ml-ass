@@ -43,14 +43,6 @@ for iter = 1:maxIter*nRatings
     bm = bm - alpha*gm;
     W = W - alpha*gW;
     Z = Z - alpha*gZ;
-
-    % Compute and output function value
-    f = 0;
-    u = X(i,1);
-    m = X(i,2);
-    yhat = bu(u) + bm(m) + W(:,m)'*Z(u,:)';
-    f = f + (1/2)*(y(i) - yhat)^2;
-    % fprintf('Iter = %d, f = %e\n',iter,f);
 end
 
 model.bu = bu;
