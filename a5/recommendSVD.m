@@ -18,11 +18,7 @@ maxIter = 10;
 alpha = 1e-2;
 for iter = 1:maxIter*nRatings
 
-    % Compute gradient
-    gu = zeros(n,1);
-    gm = zeros(d,1);
-    gW = zeros(k,d);
-    gZ = zeros(n,k);
+    % Select random example
     i = randi([1 nRatings]);
 
     % Make prediction for this rating based on current model
@@ -33,16 +29,12 @@ for iter = 1:maxIter*nRatings
     % Calculate gradient of this prediction of the random example
     % (follows from chain rule)
     r = y(i)-yhat;
-    gu(u) = -r;
-    gm(m) = -r;
-    gW(:,m) = -r*Z(u,:)';
-    gZ(u,:) = -r*W(:,m)';
 
     % Take a small step in the negative gradient directions
-    bu = bu - alpha*gu;
-    bm = bm - alpha*gm;
-    W = W - alpha*gW;
-    Z = Z - alpha*gZ;
+    bu(u) = bu(u) - alpha*-r;
+    bm(m) = bm(m) - alpha*-r;
+    W(:,m) = W(:,m) - alpha*-r*Z(u,:)';
+    Z(u,:) = Z(u,:) - alpha*-r*W(:,m)';
 end
 
 model.bu = bu;
