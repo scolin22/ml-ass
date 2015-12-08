@@ -1,5 +1,5 @@
 function [model] = logLinearClassifier(X,y)
-% Classification using one-vs-all least squares
+% Classification using one-vs-all logistic loss
 
 % Compute sizes
 [n,d] = size(X);
