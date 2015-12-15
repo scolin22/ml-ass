@@ -6,6 +6,7 @@ k = 3;
 X = standardizeCols(X);
 
 ED = X.^2*ones(d,n) + ones(n,d)*(X').^2 - 2*X*(X');
+ED = sqrt(ED);
 
 % Get all nodes' k-nearest-neighbours
 [kMinDist, kMinIdx] = sort(ED);
