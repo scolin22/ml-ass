@@ -16,7 +16,7 @@ while 1
     w_new = sign(w_new).*max(abs(w_new)-lambda*alpha,0); % Proximal step
 	[f_new,g_new] = funObj(w_new,varargin{:});
 	funEvals = funEvals+1;
-    
+
     gtd = g'*(w_new-w);
     while f_new + lambda*sum(abs(w_new)) > f + lambda*sum(abs(w)) + gamma*alpha*gtd
         if verbose
@@ -24,7 +24,7 @@ while 1
         end
         alpha = alpha/2;
         w_new = w - alpha*g; % Gradient step
-        w_new = sign(w_new).*max(abs(w_new)-lambda*alpha,0); % Proximal step
+        w_new = sign(w_new).*max(abs(w_new)-lambda*alpha*(1),0); % Proximal step, lambda*alpha*(1) is the step taken by the regularization
         [f_new,g_new] = funObj(w_new,varargin{:});
         funEvals = funEvals+1;
     end
@@ -33,37 +33,37 @@ while 1
     s = w_new - w;
     y = g_new - g;
     alphaBB = (s'*s)/(s'*y);
-        
+
     %% Update parameters/function/gradient
     w = w_new;
     f = f_new;
     g = g_new;
-	
+
     %% Test termination conditions
 	optCond = norm(w-sign(w-g).*max(abs(w-g)-lambda,0),'inf');
     if verbose
         fprintf('%6d %15.5e %15.5e %15.5e\n',funEvals,alpha,f+lambda*sum(abs(w)),optCond);
     end
-	
+
 	if optCond < optTol
         if verbose
             fprintf('Problem solved up to optimality tolerance\n');
         end
 		break;
 	end
-	
+
 	if funEvals >= maxEvals
         if verbose
             fprintf('At maximum number of function evaluations\n');
         end
 		break;
     end
-    
-    
+
+
    %% Update step-size for next iteration
     if ~isLegal(alphaBB) || alphaBB < 1e-10 || alphaBB > 1e10
         fprintf('Resetting\n');
-       alpha = 1; 
+       alpha = 1;
     else
         alpha = alphaBB;
     end

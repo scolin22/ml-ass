@@ -18,5 +18,5 @@ end
 
 function [yhat] = predict(model,X)
 W = model.W;
-    [~,yhat] = max(X*W,[],2);
+[~,yhat] = max(X*W,[],2);
 end
